@@ -21,7 +21,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${inter.className} antialiased h-screen w-screen transition-colors`}
+        className={`${inter.className} antialiased h-screen w-screen transition-colors bg-white dark:bg-black`}
       >
         <ThemeProvider
         attribute="class"

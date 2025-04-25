@@ -1,103 +1,83 @@
-import Image from "next/image";
+'use client'
 
-export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+import TopBar from "@/components/ui/topbar"
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react"
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
-  );
+type Game = {
+  id: number;
+  thumbnail: string;
+  name: string;
 }
+
+const Home = () => {
+  const [games, setGames] = useState<Game[]>([
+    {
+      id: 313131,
+      thumbnail: "https://tr.rbxcdn.com/180DAY-c97cc7e5a99162fbcf0ab990500bd4de/768/432/Image/Webp/noFilter",
+      name: "BikeWorld 🔥"
+    },
+    {
+      id: 69420,
+      thumbnail: "https://tr.rbxcdn.com/180DAY-2f03dd743fcc4a541c0bb88d76bc8fa1/768/432/Image/Webp/noFilter",
+      name: "🔵Circle Grinding Inc."
+    },
+    {
+      id: 313131,
+      thumbnail: "https://tr.rbxcdn.com/180DAY-fac36a23cfeb9b18e1c477c1082ffa50/768/432/Image/Webp/noFilter",
+      name: "[🎇X2 STATS🎇] MILK UPGRADE TREE 😋"
+    }
+    ])
+  return (
+    <main className="min-h-screen px-6 w-full flex flex-col">
+      <TopBar/>
+      <div className="flex-1 w-full max-w-7xl mx-auto py-4 pb-11 px-6 overflow-y-auto">
+        {games?.length > 0 ? <GamesList games={games} /> : <NoGamesAdded/>}
+      </div>
+    </main>
+  )
+}
+
+const GamesList = ({ games } : { games:Game[] }) => {
+  const router = useRouter()
+  return (
+    <div className="w-full flex flex-col items-center space-y-3.5 overscroll-x-hidden">
+      <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {games.map((gameData, i) => (
+          <button 
+            key={i}
+            className="relative select-none flex items-end w-full aspect-video cursor-pointer bg-black rounded-2xl before:absolute before:inset-0 before:bg-black/80 before:rounded-2xl bg-center bg-cover p-4"
+            style={{ backgroundImage: `url(${gameData.thumbnail})` }}
+            onClick={() => router.push(`/feedbacks/${gameData.id}`)}
+          >
+            <p className="font-bold text-3xl text-start text-white drop-shadow-md">
+              {gameData.name}
+            </p>
+          </button>
+        ))}
+      </div>
+      <AddGameButton/>
+    </div>
+  )
+}
+
+const NoGamesAdded = () => {
+  return (
+    <div className="w-full h-full flex justify-center items-center flex-col space-y-3.5">
+      <p className="text-3xl font-bold">you haven't added any games.</p>
+      <AddGameButton/>
+    </div>
+  )
+}
+
+const AddGameButton = () => {
+  const router = useRouter()
+  return (
+    <button onClick={() => router.push("/add-game")} className="h-14 w-72 bg-[#1A1A1A] cursor-pointer dark:bg-white dark:text-black rounded-xl font-medium text-lg text-white">
+      add game
+    </button>
+  )
+}
+
+export default Home
