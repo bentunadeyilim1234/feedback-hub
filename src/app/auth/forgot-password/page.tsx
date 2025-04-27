@@ -16,26 +16,26 @@ const ForgotPasswordPage = () => {
 
   const ResetForm = () => {
     return (
-      <form onSubmit={handleSubmit} className="flex-col w-full flex px-7.5 sm:px-11 space-y-1">
-        <div className="flex-col w-full justify-center flex space-y-2.5 py-2.5">
+      <form onSubmit={handleSubmit} className="w-full flex flex-col px-2 sm:px-8 space-y-4">
+        <div className="w-full flex flex-col space-y-2 py-2">
           <label className="text-lg font-medium">email</label>
           <div className="bg-gradient-to-b p-px rounded-lg from-[#BCBCBC] dark:from-[#454545] to-[#9C9C9C] dark:to-[#5A5A5A]">
             <input
               type="email"
               name="email"
               id="email"
-              className="bg-[#EBEBEB] dark:bg-[#151515] py-1 rounded-md w-full focus:outline-0 px-2"
+              className="w-full py-1 px-2 rounded-md bg-[#EBEBEB] dark:bg-[#151515] focus:outline-0"
               required
               onChange={(e) => setEmail(e.target.value)}
             />
           </div>
         </div>
-        {error&&<p>error: {error.toLowerCase()}</p>}
-        <div className="flex-col w-full justify-center py-2.5 space-y-2.5">
-          <button type="submit" className="h-14 cursor-pointer w-full bg-[#1A1A1A] dark:bg-white dark:text-black rounded-xl font-medium text-lg text-white">
+        {error && <p>error: {error.toLowerCase()}</p>}
+        <div className="w-full flex flex-col py-2 space-y-4">
+          <button type="submit" className="w-full h-14 cursor-pointer bg-[#1A1A1A] dark:bg-white dark:text-black rounded-xl font-medium text-lg text-white">
             send password reset link
           </button>
-          <div className="flex justify-between w-full px-1 mt-2 sm:mt-0 flex-col sm:flex-row">
+          <div className="w-full px-1 mt-2 sm:mt-0">
             <Link href="/auth/login" className="font-medium text-lg sm:text-sm">go back</Link>
           </div>
         </div>
@@ -45,14 +45,14 @@ const ForgotPasswordPage = () => {
 
   const SuccessMessage = () => {
     return (
-      <div className="flex-col w-full flex px-7.5 sm:px-11 space-y-1">
-        <div className="flex-col w-full flex p-2.5 font-medium text-xl">
-          <p>password reset link was sent to:</p>
-          <p className="font-bold">{email||"[your email address]"}</p>
-          <p>please check your inbox.</p>
+      <div className="w-full flex flex-col sm:px-11 space-y-4">
+        <div className="w-full flex flex-col p-2 font-medium">
+          <p className="text-xl">password reset link was sent to:</p>
+          <p className="text-xl font-bold">{email || "[your email address]"}</p>
+          <p className="text-xl">please check your inbox.</p>
         </div>
-        <div className="px-2.5">
-          <Link href={"/auth/login"} className="sm:text-base text-lg">go back</Link>
+        <div className="px-2">
+          <Link href="/auth/login" className="text-lg sm:text-base">go back</Link>
         </div>
       </div>
     )
@@ -60,7 +60,6 @@ const ForgotPasswordPage = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
       redirectTo: `${location.origin}/auth/reset-password`
     })
@@ -73,10 +72,10 @@ const ForgotPasswordPage = () => {
   }
 
   return (
-    <main className="sm:px-6 w-full h-full items-center flex flex-col">
+    <main className="w-full h-full flex flex-col items-center">
       <TopBar/>
-      <div className="h-full w-full max-w-xl items-center justify-center flex pb-21">
-        {success?<SuccessMessage />:<ResetForm />}
+      <div className="w-full px-5 h-full max-w-xl flex items-center justify-center pb-20">
+        {success ? <SuccessMessage /> : <ResetForm />}
       </div>
     </main>
   )

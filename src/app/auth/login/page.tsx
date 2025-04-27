@@ -39,44 +39,46 @@ const LoginPage = () => {
   }
 
   return (
-    <main className="sm:px-6 w-full h-full items-center flex flex-col">
+    <main className="w-full h-full flex flex-col items-center">
       <TopBar/>
-      <div className="h-full w-full max-w-xl items-center flex pb-21">
-        <form autoComplete="off" onSubmit={handleSubmit} className="flex-col w-full flex px-5 sm:px-11 space-y-2.5 sm:space-y-3.5">
+      <div className="w-full h-full max-w-xl flex items-center pb-20">
+        <form autoComplete="off" onSubmit={handleSubmit} className="w-full flex flex-col px-5 sm:px-11 space-y-4">
           <input autoComplete="false" name="hidden" type="text" style={{ display: "none" }} />
-          <div className="flex-col w-full justify-center flex space-y-2.5 p-2.5">
+          <div className="w-full flex flex-col space-y-2 p-2">
             <label className="text-lg font-medium">email</label>
             <div className="bg-gradient-to-b p-px rounded-lg from-[#BCBCBC] dark:from-[#454545] to-[#9C9C9C] dark:to-[#5A5A5A]">
               <input
                 type="email"
                 name="email"
                 id="email"
-                className="bg-[#EBEBEB] dark:bg-[#151515] py-1 rounded-md w-full focus:outline-0 px-2"
+                className="w-full py-1 px-2 rounded-md bg-[#EBEBEB] dark:bg-[#151515] focus:outline-0"
                 required
                 onChange={(e) => setEmail(e.target.value)}
               />
             </div>
           </div>
-          <div className="flex-col w-full justify-center flex space-y-2.5 p-2.5">
+          
+          <div className="w-full flex flex-col space-y-2 p-2">
             <label className="text-lg font-medium">password</label>
             <div className="bg-gradient-to-b p-px rounded-lg from-[#BCBCBC] dark:from-[#454545] to-[#9C9C9C] dark:to-[#5A5A5A]">
               <input
                 type="password"
                 name="password"
                 id="password"
-                className="bg-[#EBEBEB] dark:bg-[#151515] py-1 rounded-md w-full focus:outline-0 px-2"
+                className="w-full py-1 px-2 rounded-md bg-[#EBEBEB] dark:bg-[#151515] focus:outline-0"
                 required
                 onChange={(e) => setPassword(e.target.value)}
               />
             </div>
-            {error&&<p>error: {error.toLowerCase()}</p>}
+            {error && <p>error: {error.toLowerCase()}</p>}
           </div>
-          <div className={`flex-col w-full justify-center p-2.5 ${error&&'py-0'} space-y-2.5`}>
-            <button type="submit" className="h-14 cursor-pointer w-full bg-[#1A1A1A] dark:bg-white dark:text-black rounded-xl font-medium text-lg text-white">
+          
+          <div className={`w-full flex flex-col p-2 space-y-4 ${error ? 'pt-0' : ''}`}>
+            <button type="submit" className="w-full h-14 cursor-pointer bg-[#1A1A1A] dark:bg-white dark:text-black rounded-xl font-medium text-lg text-white">
               log in
             </button>
             <ContinueWithGoogleBtn onClick={handleGoogleLogin} /> 
-            <div className="flex justify-between w-full px-1 mt-2 sm:mt-0 flex-col sm:flex-row">
+            <div className="w-full flex flex-col sm:flex-row justify-between px-1 mt-2 sm:mt-0">
               <Link href="/auth/forgot-password" className="font-medium text-lg sm:text-sm">forgot password?</Link>
               <Link href="/auth/signup" className="font-medium text-lg sm:text-sm">don't have an account? sign up</Link>
             </div>

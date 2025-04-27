@@ -3,7 +3,7 @@
 import { MouseEventHandler } from "react"
 import { FcGoogle } from "react-icons/fc"
 
-const ContinueWithGoogleBtn = ({ onClick } : { onClick:MouseEventHandler }) => {
+const ContinueWithGoogleBtn = ({ onClick } : { onClick: MouseEventHandler }) => {
   return ( 
     <button
       onClick={onClick}

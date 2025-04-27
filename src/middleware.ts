@@ -3,6 +3,12 @@ import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
 export async function middleware(request: NextRequest) {
+
+  const PUBLIC_PATHS = ['/api/ping', '/api/add-feedback', '/api/get-feedbacks']
+  if (PUBLIC_PATHS.includes(request.nextUrl.pathname)) {
+    return NextResponse.next()
+  }
+
   const response = NextResponse.next({
     request: {
       headers: request.headers
