@@ -12,6 +12,7 @@
 
 # testing
 /coverage
+/old_pages
 
 # next.js
 /.next/
