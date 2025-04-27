@@ -64,7 +64,7 @@ const GamesList = ({ games } : { games: game[] }) => {
 const NoGamesAdded = () => {
   return (
     <div className="w-full h-full flex justify-center items-center flex-col space-y-4">
-      <p className="text-3xl font-bold">you haven't added any games.</p>
+      <p className="text-3xl font-bold">{"you haven't added any games."}</p>
       <AddGameButton/>
     </div>
   )

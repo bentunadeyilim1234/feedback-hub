@@ -2,7 +2,7 @@ import { createClient } from "@/utils/supabase/server"
 import { NextResponse } from "next/server"
 import { auth } from "@trigger.dev/sdk/v3";
 
-export async function GET(request: Request) {
+export async function GET() {
   const supabase = await createClient();
 
   const {

@@ -1,10 +1,10 @@
+/* eslint-disable  @typescript-eslint/no-explicit-any */
+
 import { createClient } from '@supabase/supabase-js'
-import { NextRequest, NextResponse } from "next/server"
+import { NextRequest } from "next/server"
 import { tasks } from '@trigger.dev/sdk/v3'
 
 //ping
-
-let xCrsfToken: string | null = ""
 
 const rbxRequest = async (verb: string, url: string, body?: any | undefined) => {
   const response = await fetch(url, {
@@ -14,14 +14,6 @@ const rbxRequest = async (verb: string, url: string, body?: any | undefined) => 
     },
     method: verb
   })
-
-  if (response.status == 403) {
-    if (response.headers.has("x-csrf-token")) {
-      xCrsfToken = response.headers.get("x-csrf-token")
-      return rbxRequest(verb, url, body)
-    }
-  }
-
   return response.json()
 }
 

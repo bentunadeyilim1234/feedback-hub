@@ -1,3 +1,5 @@
+/* eslint-disable  @typescript-eslint/no-explicit-any */
+
 'use client'
 
 import TopBar from "@/components/ui/topbar"
@@ -8,7 +10,6 @@ import { FiStar } from "react-icons/fi";
 import TimeAgo from 'javascript-time-ago'
 import en from 'javascript-time-ago/locale/en'
 import { useParams } from "next/navigation";
-import { createClient } from "@/utils/supabase/client";
 
 TimeAgo.addDefaultLocale(en)
 
@@ -43,6 +44,7 @@ const FeedbacksPage = () => {
   const [feedbacks, setFeedbacks] = useState<Feedback[]>([])
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const { universeid } = useParams()
+  
   useEffect(() => {
     async function fetchDetails() {
       const res = await fetch('/api/get-feedbacks', {
@@ -55,7 +57,7 @@ const FeedbacksPage = () => {
       setFeedbacks(data["feedbacks"])
     }
     fetchDetails()
-  }, [])
+  }, [universeid])
 
   return (
     <main className="w-full h-full flex flex-col items-center">
@@ -73,8 +75,7 @@ const FeedbacksPage = () => {
   )
 }
 
-const GameBadge = (props: any) => {
-  const { gameDetails } : { gameDetails: Game } = props
+const GameBadge = ({ gameDetails } : { gameDetails: Game }) => {
   return(
     <div className="space-x-3.5 flex flex-row items-start sm:items-center max-w-xl mx-auto">
       <Image

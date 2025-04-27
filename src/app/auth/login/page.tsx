@@ -80,7 +80,7 @@ const LoginPage = () => {
             <ContinueWithGoogleBtn onClick={handleGoogleLogin} /> 
             <div className="w-full flex flex-col sm:flex-row justify-between px-1 mt-2 sm:mt-0">
               <Link href="/auth/forgot-password" className="font-medium text-lg sm:text-sm">forgot password?</Link>
-              <Link href="/auth/signup" className="font-medium text-lg sm:text-sm">don't have an account? sign up</Link>
+              <Link href="/auth/signup" className="font-medium text-lg sm:text-sm">{"don't have an account? sign up"}</Link>
             </div>
           </div>
         </form>

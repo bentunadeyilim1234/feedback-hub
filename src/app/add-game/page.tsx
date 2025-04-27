@@ -1,3 +1,4 @@
+/*
 "use client"
 
 import TopBar from "@/components/ui/topbar"
@@ -147,4 +148,4 @@ const AddGamePage = () => {
   )
 }
 
-export default AddGamePage
+export default AddGamePage*/
