@@ -4,7 +4,7 @@ import TopBar from "@/components/ui/topbar"
 import { createClient } from "@/utils/supabase/client"
 import Link from "next/link"
 import { useRouter, useSearchParams } from "next/navigation"
-import { useState } from "react"
+import { Suspense, useState } from "react"
 
 const ForgotPasswordPage = () => {
   const supabase = createClient()
@@ -81,4 +81,10 @@ const ForgotPasswordPage = () => {
   )
 }
 
-export default ForgotPasswordPage
+export default function SuspenseExport() {
+  return (
+    <Suspense>
+      <ForgotPasswordPage/>
+    </Suspense>
+  )
+}
