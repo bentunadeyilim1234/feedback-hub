@@ -178,7 +178,7 @@ const GameBadge = ({ gameDetails, analytics } : { gameDetails: Game, analytics: 
 }
 
 const FeedbackItem = (props: any) => {
-  const { feedbackDetails, handleDelete } : { feedbackDetails: Feedback, handleDelete: Function } = props
+  const { feedbackDetails, handleDelete } : { feedbackDetails: Feedback, handleDelete: ( feedbackId: number ) => void } = props
   const { TimeAgo } = useTimeAgo();
   //const timeAgo = moment(Date.parse(feedbackDetails.created_at)).fromNow()
   return (
