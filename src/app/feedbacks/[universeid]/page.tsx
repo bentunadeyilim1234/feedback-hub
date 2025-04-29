@@ -75,7 +75,17 @@ const FeedbacksPage = () => {
   const [analytics, setAnalytics] = useState<Analytic>()
   const { universeid } = useParams()
   const supabase = createClient()
-  
+
+  async function handleDelete(feedbackId: number) {
+    const res = await fetch('/api/feedbacks/delete/'+feedbackId)
+    const data = await res.json()
+    if(data.success) {
+      setFeedbacks(feedbacks.filter(function( f: Feedback ) {
+        return f.id !== feedbackId
+      }))
+    }
+  }
+
   useEffect(() => {
     async function fetchDetails() {
       const res = await fetch('/api/feedbacks/list/'+universeid)
@@ -83,26 +93,23 @@ const FeedbacksPage = () => {
       setIsLoading(false)
       setGameDetails(data.game_details)
       setFeedbacks(data.feedbacks)
-      data["analytics"].feedbackCount = data.feedbacks.length
+      data.analytics.feedbackCount = data.feedbacks.length
       setAnalytics(data.analytics)
     }
     fetchDetails()
   }, [universeid])
 
   useEffect(() => {
-    /*function updateAnalytics() {
-      const avg = feedbacks.reduce((total: number, next: Feedback) => total + next.rating, 0) / feedbacks.length
-      setAnalytics({ avg: avg, feedbackCount: feedbacks.length })
-    }*/
     async function subscribeChanges() {
       await supabase.realtime.setAuth() // Needed for Realtime Authorization
       supabase
         .channel(`feedbacks`)
-        .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'feedbacks', filter: 'place_id=eq.'+gameDetails?.place_id }, (payload: RealtimeFeedbackData | any) => {
+        .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'feedbacks', filter: 'place_id=eq.'+gameDetails?.place_id },
+          (payload: RealtimeFeedbackData | any) => {
           setFeedbacks([payload.new, ...feedbacks])
-          //updateAnalytics()
         })
-        .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'feedbacks', filter: 'place_id=eq.'+gameDetails?.place_id }, (payload: RealtimeFeedbackData | any) => {
+        .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'feedbacks', filter: 'place_id=eq.'+gameDetails?.place_id },
+          (payload: RealtimeFeedbackData | any) => {
           setFeedbacks(prev => 
             prev.map(item =>
               item.id === payload.old.id ? { ...item, author_avatar_url: payload.new.author_avatar_url } : item
@@ -111,12 +118,11 @@ const FeedbacksPage = () => {
           const index = feedbacks.findIndex((f: Feedback) => f.id == payload.old.id)
           feedbacks[index] = payload.new
         })
-        .on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'feedbacks', filter: 'place_id=eq.'+gameDetails?.place_id }, (payload: RealtimeFeedbackData | any) => {
-          console.log(payload)
+        .on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'feedbacks', filter: 'place_id=eq.'+gameDetails?.place_id },
+          (payload: RealtimeFeedbackData | any) => {
           setFeedbacks(feedbacks.filter(function( f: Feedback ) {
             return f.id !== payload.old.id
           }))
-          //updateAnalytics()
         })
         .subscribe()
     }
@@ -131,7 +137,7 @@ const FeedbacksPage = () => {
         <AnimatePresence>
           <div className="space-y-2.5 max-w-xl mx-auto">
             {feedbacks.map((feedback: Feedback) => (
-              <FeedbackItem feedbackDetails={feedback} key={feedback.id} />
+              <FeedbackItem feedbackDetails={feedback} key={feedback.id} handleDelete={handleDelete} />
             ))}
             {isLoading&&<p className="text-xl text-center w-full font-medium">[loading...]</p>}
           </div>
@@ -172,7 +178,7 @@ const GameBadge = ({ gameDetails, analytics } : { gameDetails: Game, analytics: 
 }
 
 const FeedbackItem = (props: any) => {
-  const { feedbackDetails } : { feedbackDetails: Feedback } = props
+  const { feedbackDetails, handleDelete } : { feedbackDetails: Feedback, handleDelete: Function } = props
   const { TimeAgo } = useTimeAgo();
   //const timeAgo = moment(Date.parse(feedbackDetails.created_at)).fromNow()
   return (
@@ -214,7 +220,7 @@ const FeedbackItem = (props: any) => {
       </div>
       <div className="sm:block p-1 sm:p-0 flex justify-between space-x-8">
         <div className="space-x-4">
-          <Link href="#" className="hover:bg-black hover:dark:bg-white hover:text-white hover:dark:text-black p-0.5">delete</Link>
+          <button onClick={() => handleDelete(feedbackDetails.id)} className="hover:bg-black hover:dark:bg-white hover:text-white hover:dark:text-black p-0.5 cursor-pointer">delete</button>
           <Link href="#" className="hover:bg-black hover:dark:bg-white hover:text-white hover:dark:text-black p-0.5">details</Link>
         </div>
         <div className="flex flex-row items-center space-x-4 sm:hidden">

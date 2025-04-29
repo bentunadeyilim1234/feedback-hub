@@ -16,6 +16,7 @@ export async function GET() {
   const { data } = await supabase
   .from('games')
   .select('*')
+  .eq('created', true)
 
   return NextResponse.json({ data });
 }
