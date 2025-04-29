@@ -164,7 +164,7 @@ const GameBadge = ({ gameDetails, analytics } : { gameDetails: Game, analytics: 
           <div className="items-center space-x-2.5 flex">
             <div className="flex-row items-center space-x-1 flex">
               <FiStar className="w-4 h-4 text-red"/>
-              <p>{parseFloat(String(analytics.avg)).toFixed(1)}/10</p>
+              <p>{parseFloat(String(analytics.avg || "0")).toFixed(1)}/10</p>
             </div>
             <p>[{nFormatter(analytics.feedbackCount, 1)} feedbacks]</p>
           </div>
