@@ -1,9 +1,11 @@
 import { createClient } from "@/utils/supabase/server"
 import { NextResponse } from "next/server"
 
+type Params = Promise<{ universeId: string }>;
+
 export async function GET(
   request: Request,
-  { params } : { params: { universeId: string } } ) {
+  { params } : { params: Params } ) {
 
   const supabase = await createClient();
   const { universeId } = await params
