@@ -4,7 +4,7 @@ import { NextResponse, type NextRequest } from 'next/server'
 
 export async function middleware(request: NextRequest) {
 
-  const PUBLIC_PATHS = ['/api/ping', '/api/add-feedback', '/api/get-feedbacks']
+  const PUBLIC_PATHS = ['/api/ping', '/api/feedbacks/add', '/api/feedbacks/list']
   if (PUBLIC_PATHS.includes(request.nextUrl.pathname)) {
     return NextResponse.next()
   }

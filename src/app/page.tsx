@@ -14,12 +14,13 @@ type game = {
 }
 
 const Home = () => {
-  const [games, setGames] = useState<game[]>([])
+  const [games, setGames] = 
+  useState<game[]>([])
   const [loading, setLoading] = useState<boolean>(true)
   
   useEffect(() => {
     async function fetchGames() {
-      const res = await fetch('/api/retrieve-games', { next: { tags: ['games'], revalidate: 3600 } })
+      const res = await fetch('/api/games/list', { next: { tags: ['games'], revalidate: 3600 } })
       const data = await res.json()
       setGames(data["data"])
       setLoading(false)

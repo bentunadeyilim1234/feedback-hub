@@ -4,6 +4,9 @@ import { createClient } from "@supabase/supabase-js";
 import { task } from "@trigger.dev/sdk/v3";
 import { Database } from "@/../database.types";
 
+const NEXT_PUBLIC_SUPABASE_URL="https://egubbtnxtwwjoefegmtp.supabase.co"
+const NEXT_PRIVATE_SUPABASE_SERVICE_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVndWJidG54dHd3am9lZmVnbXRwIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0NTQ5OTA4OCwiZXhwIjoyMDYxMDc1MDg4fQ.pUMse6uhAGj2q9ZUAWhhk9OpMEPzOQjaPi71ME0GA4k"
+
 const rbxRequest = async (verb: string, url: string, body?: any | undefined) => {
   const response = await fetch(url, {
     headers: {
@@ -22,7 +25,7 @@ export const updateGameDetails = task({
     const { feedback_id } = payload;
 
     const supabase = createClient<Database>(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PRIVATE_SUPABASE_SERVICE_KEY!,
+      NEXT_PUBLIC_SUPABASE_URL, NEXT_PRIVATE_SUPABASE_SERVICE_KEY,
       {
         auth: {
           autoRefreshToken: false,
