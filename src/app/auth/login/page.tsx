@@ -6,12 +6,19 @@ import Link from "next/link"
 import { useSearchParams, useRouter } from "next/navigation"
 import { Suspense, useState } from "react"
 import ContinueWithGoogleBtn from "@/components/ui/continue-with-google"
+import { z } from "zod";
+
+export const validType=z.object({
+  email: z.string().email(),
+  password: z.string().min(8)
+})
 
 const LoginPage = () => {
   const supabase = createClient()
   const router = useRouter()
   const searchParams = useSearchParams()
   const error = searchParams.get('error')
+  const [validationError, setValidationError] = useState<string>();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -26,15 +33,25 @@ const LoginPage = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password
-    })
-
-    if (error) {
-      router.push('/auth/login?error=' + encodeURIComponent(error.message))
-    } else {
-      router.push('/')
+    try {
+      validType.parse({
+        email: email,
+        password: password
+      })
+      setValidationError("")
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password
+      })
+      if (error) {
+        router.push('/auth/login?error=' + encodeURIComponent(error.message))
+      } else {
+        router.push('/')
+      }
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        setValidationError(error.errors[0].message)
+      }
     }
   }
 
@@ -71,6 +88,7 @@ const LoginPage = () => {
               />
             </div>
             {error && <p>error: {error.toLowerCase()}</p>}
+            {validationError && <p>error: {validationError.toLowerCase()}</p>}
           </div>
           
           <div className={`w-full flex flex-col p-2 space-y-4 ${error ? 'pt-0' : ''}`}>

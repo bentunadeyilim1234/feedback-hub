@@ -6,15 +6,23 @@ import { createClient } from "@/utils/supabase/client"
 import Link from "next/link"
 import { useRouter, useSearchParams } from "next/navigation"
 import { Suspense, useState } from "react"
+import { z } from "zod";
+
+export const validType=z.object({
+  username: z.string().min(5),
+  email: z.string().email(),
+  password: z.string().min(8)
+})
 
 const SignupPage = () => {
   const supabase = createClient()
   const router = useRouter()
   const searchParams = useSearchParams()
   const error = searchParams.get('error')
+  const [validationError, setValidationError] = useState<string>();
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [username, setUsername] = useState("");
 
   const handleGoogleSignup = async () => {
     const { error } = await supabase.auth.signInWithOAuth({
@@ -27,21 +35,32 @@ const SignupPage = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    const { error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        emailRedirectTo: `${location.origin}/`,
-        data: {
-          username: username,
+    try {
+      validType.parse({
+        username: username,
+        email: email,
+        password: password
+      })
+      setValidationError("")
+      const { error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          emailRedirectTo: `${location.origin}/`,
+          data: {
+            username: username,
+          },
         },
-      },
-    })
-
-    if (error) {
-      router.push('/auth/signup?error=' + encodeURIComponent(error.message))
-    } else {
-      router.push('/auth/verify-email?email=${encodeURIComponent(email)}')
+      })
+      if (error) {
+        router.push('/auth/signup?error=' + encodeURIComponent(error.message))
+      } else {
+        router.push('/auth/verify-email?email=${encodeURIComponent(email)}')
+      }
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        setValidationError(error.errors[0].message)
+      }
     }
   }
   
@@ -93,6 +112,7 @@ const SignupPage = () => {
               />
             </div>
             {error && <p>error: {error.toLowerCase()}</p>}
+            {validationError && <p>error: {validationError.toLowerCase()}</p>}
           </div>
           
           <div className={`w-full flex flex-col p-2 space-y-4 ${error ? 'pt-0' : ''}`}>
