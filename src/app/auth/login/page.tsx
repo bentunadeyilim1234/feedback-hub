@@ -8,7 +8,7 @@ import { Suspense, useState } from "react"
 import ContinueWithGoogleBtn from "@/components/ui/continue-with-google"
 import { z } from "zod";
 
-export const validType=z.object({
+const validType=z.object({
   email: z.string().email(),
   password: z.string().min(8)
 })

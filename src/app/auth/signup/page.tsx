@@ -8,7 +8,7 @@ import { useRouter, useSearchParams } from "next/navigation"
 import { Suspense, useState } from "react"
 import { z } from "zod";
 
-export const validType=z.object({
+const validType=z.object({
   username: z.string().min(5),
   email: z.string().email(),
   password: z.string().min(8)
