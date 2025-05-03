@@ -50,7 +50,7 @@ const TopBar = () => {
                 alt="profile pic"
               />
             )}
-            <p className="font-bold text-base hidden sm:block">{accountDetails.user_metadata.username}</p>
+            <p className="font-bold text-base hidden sm:block">{accountDetails.user_metadata.name || accountDetails.user_metadata.username}</p>
             <div className="w-6 h-6 flex justify-center items-center">
               <DropdownMenu>
                 <DropdownMenuTrigger className="cursor-pointer">
@@ -58,7 +58,7 @@ const TopBar = () => {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="dark:bg-black">
                   <DropdownMenuItem className="sm:hidden block dark:focus:bg-black focus:bg-white">
-                    {accountDetails.user_metadata.username}
+                    {accountDetails.user_metadata.name || accountDetails.user_metadata.username}
                   </DropdownMenuItem>
                   <Link href="/add-game">
                     <DropdownMenuItem className="cursor-pointer">add game</DropdownMenuItem>

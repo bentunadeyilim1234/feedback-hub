@@ -5,9 +5,22 @@ import { NextRequest } from "next/server"
 type FeedbackPayload = {
   author_id: number;
   author_displayname: string | null;
+  author_avatar_url: string;
   author_username: string;
   rating: number;
   feedback_content: string;
+}
+
+const rbxRequest = async (verb: string, url: string, body?: any | undefined) => {
+  const response = await fetch(url, {
+    headers: {
+      Cookie: `.ROBLOSECURITY=${process.env.ROBLOX_API!};`,
+      "Content-Length": body?.length.toString() || "0"
+    },
+    method: verb
+  })
+
+  return response.json()
 }
 
 export async function POST(req: NextRequest) {
@@ -21,12 +34,15 @@ export async function POST(req: NextRequest) {
   const user_id = Buffer.from(client_secret, 'base64').toString('utf8')
   const { data, error } = await supabase.auth.admin.getUserById(user_id)
   if(!data.user || error) { return new Response(JSON.stringify({ success: false, error: "secret key is invalid." }), { status: 200 }) }
+  const avatarResponse = await rbxRequest("GET", `https://thumbnails.roblox.com/v1/users/avatar-headshot?userIds=${payload.author_id}&size=48x48&format=Png&isCircular=true`)
+  if(!avatarResponse || avatarResponse.length <= 0) { return new Response(JSON.stringify({ success: false, error: "could not get user avatar." }), { status: 200 }) }
   const insert_data = await supabase
   .from('feedbacks')
   .insert({
     'place_id': place_id,
     'author_id': payload.author_id,
     'author_displayname': payload.author_displayname || null,
+    'author_avatar_url': avatarResponse.data[0].imageUrl,
     'author_username': payload.author_username,
     'rating': payload.rating,
     'feedback_content': payload.feedback_content,

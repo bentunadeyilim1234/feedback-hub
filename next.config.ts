@@ -2,7 +2,10 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
-    remotePatterns: [new URL('https://*.rbxcdn.com/**')],
+    remotePatterns: [
+      new URL('https://*.rbxcdn.com/**'),
+      new URL('https://*.googleusercontent.com/**')
+    ],
   },
 };
 
