@@ -1,3 +1,5 @@
+/* eslint-disable  @typescript-eslint/no-explicit-any */
+
 import { createClient } from '@supabase/supabase-js'
 import { tasks } from '@trigger.dev/sdk/v3';
 import { NextRequest } from "next/server"
