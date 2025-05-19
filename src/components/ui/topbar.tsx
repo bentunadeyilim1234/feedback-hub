@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react"
 import { FiMoon, FiSun, FiSliders } from "react-icons/fi"
 import Image from "next/image"
-import { useTheme } from "next-themes"
+//import { useTheme } from "next-themes"
 import { createClient } from "@/utils/supabase/client"
 import { useRouter } from "next/navigation"
 import { User } from "@supabase/supabase-js"
@@ -39,7 +39,7 @@ const TopBar = () => {
     setIsDarkMode(!isDarkMode)
   }
 
-  const { setTheme, theme } = useTheme()
+  //const { setTheme, theme } = useTheme()
   
   return (
     <div className="min-h-18 border-b-1 w-full flex justify-between items-center px-6 sm:px-12 select-none sticky top-0 bg-white dark:bg-black z-50">
