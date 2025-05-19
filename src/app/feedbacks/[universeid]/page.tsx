@@ -132,7 +132,7 @@ const FeedbacksPage = () => {
   return (
     <main className="w-full h-full flex flex-col items-center">
       <TopBar/>
-      <div className="w-full px-6 h-full space-y-4 pb-21 overflow-x-hidden">
+      <div className="w-full px-6 h-full space-y-4 py-4 overflow-x-hidden">
         {gameDetails&&<GameBadge gameDetails={gameDetails} analytics={analytics} />}
         <AnimatePresence>
           <div className="space-y-2.5 max-w-xl mx-auto">

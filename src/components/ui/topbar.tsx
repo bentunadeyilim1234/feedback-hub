@@ -16,6 +16,7 @@ import Link from "next/link"
 
 const TopBar = () => {
   const [accountDetails, setAccountDetails] = useState<User | null>()
+  const [isDarkMode, setIsDarkMode] = useState<boolean>()
   const supabase = createClient()
   const router = useRouter()
   
@@ -33,10 +34,15 @@ const TopBar = () => {
     })
   }
 
+  const toggleDarkMode = () => {
+    document.documentElement.classList.toggle('dark')
+    setIsDarkMode(!isDarkMode)
+  }
+
   const { setTheme, theme } = useTheme()
   
   return (
-    <div className="min-h-20 w-full flex justify-between items-center px-6 sm:px-12 select-none sticky top-0 bg-white dark:bg-black z-50">
+    <div className="min-h-18 border-b-1 w-full flex justify-between items-center px-6 sm:px-12 select-none sticky top-0 bg-white dark:bg-black z-50">
       <p className="font-bold text-3xl">{accountDetails?<Link href={"/"}>feedback hub</Link>:"feedback hub"}</p>
       <div className="flex items-center space-x-2 sm:space-x-7">
         {accountDetails && (
@@ -71,11 +77,17 @@ const TopBar = () => {
             </div>
           </div>
         )}
-        <button 
+        {/*<button 
           className="w-6 h-6 cursor-pointer" 
           onClick={() => setTheme(theme === "light" ? "dark" : "light")}
         >
           {theme === "light" ? <FiMoon size={24} /> : <FiSun size={24} />}
+        </button>*/}
+        <button 
+          className="w-6 h-6 cursor-pointer" 
+          onClick={toggleDarkMode}
+        >
+          {isDarkMode ? <FiMoon size={24} /> : <FiSun size={24} />}
         </button>
       </div>
     </div>
